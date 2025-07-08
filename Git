@@ -1,0 +1,154 @@
+Sure! Here's the cleaned-up version without symbols and only the text:
+
+---
+
+### 1. git status
+
+**Q: What does `git status` do in Git? How is it helpful during development?**
+**A:**
+`git status` shows the current state of the working directory and staging area. It helps identify:
+
+* Modified files
+* Files staged for commit
+* Untracked files
+* Branch information
+  It is especially useful to see what changes are pending before a commit.
+
+---
+
+### 2. git add
+
+**Q: What is the purpose of `git add`? Can you add specific lines or only whole files?**
+**A:**
+`git add` stages changes in files to be committed. You can:
+
+* Stage entire files using `git add file.txt`
+* Stage specific lines using `git add -p file.txt` (patch mode)
+  It helps in breaking down large commits into logical parts.
+
+---
+
+### 3. git commit
+
+**Q: What does `git commit` do? What is the difference between `git commit -m` and `git commit`?**
+**A:**
+`git commit` saves the staged changes into the local repository.
+
+* `git commit -m "message"` adds a commit message inline
+* `git commit` without `-m` opens an editor to write a detailed commit message
+
+---
+
+### 4. git push
+
+**Q: What does `git push` do, and what are the common issues one might face during pushing?**
+**A:**
+`git push` sends local commits to a remote repository like GitHub.
+Common issues include:
+
+* Authentication errors
+* Remote rejection (e.g., non-fast-forward updates)
+* Pushing to a protected branch
+
+These can be resolved using:
+
+```bash
+git pull --rebase
+git push origin branch-name
+```
+
+---
+
+### 5. git revert
+
+**Q: What is the use of `git revert` and how is it different from `git reset`?**
+**A:**
+`git revert` creates a new commit that undoes the changes from a previous commit. It is used on public/shared branches.
+`git reset` alters the commit history and is unsafe for public branches.
+
+Example:
+
+```bash
+git revert <commit-hash>
+```
+
+---
+
+### 6. git log
+
+**Q: How do you view commit history using `git log` and how to make it readable?**
+**A:**
+`git log` shows the history of commits.
+Useful options:
+
+* `--oneline`: compact view
+* `--graph`: visual representation of branches
+* `--author`: filter commits by author
+
+Example:
+
+```bash
+git log --oneline --graph --decorate
+```
+
+---
+
+### 7. Difference between Git and GitHub
+
+**Q: What is the difference between Git and GitHub? Can you use Git without GitHub?**
+**A:**
+
+* Git is a version control system that runs locally to track code changes
+* GitHub is a remote hosting platform for Git repositories
+
+Yes, Git can be used without GitHub — for local development or with other platforms like GitLab, Bitbucket, etc.
+
+---
+
+### Extra Git Interview Questions
+
+**Q: What is the difference between `git pull` and `git fetch`?**
+**A:**
+
+* `git fetch` downloads changes from the remote without merging them
+* `git pull` fetches and merges remote changes into your current branch
+
+---
+
+**Q: How do you resolve a merge conflict in Git?**
+**A:**
+
+* Git marks the conflict in files using `<<<<<<<`, `=======`, `>>>>>>>`
+* You need to edit the file manually, fix the conflict, save it
+* Then use `git add file.txt` followed by `git commit`
+
+---
+
+**Q: What are Git branches and how to create one?**
+**A:**
+Branches allow isolated development.
+To create and switch to a new branch:
+
+```bash
+git checkout -b feature-branch
+```
+
+---
+
+**Q: What is `.gitignore` and why is it used?**
+**A:**
+`.gitignore` tells Git which files or directories to ignore. Common examples include:
+
+* `node_modules/`
+* `*.log`
+* `secrets.txt`
+
+---
+
+**Q: How can you undo a local commit that hasn’t been pushed yet?**
+**A:**
+
+* `git reset --soft HEAD~1` keeps changes staged
+* `git reset --mixed HEAD~1` keeps changes in working directory
+* `git reset --hard HEAD~1` discards changes completely
+
