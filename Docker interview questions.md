@@ -1,6 +1,5 @@
-from pathlib import Path
 
-content = r'''# 🐳 Top 30 Docker Interview Questions & Answers
+🐳 Top 30 Docker Interview Questions & Answers
 
 ## DevOps / SRE Interview Preparation
 
