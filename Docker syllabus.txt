@@ -1,0 +1,683 @@
+## 🐳 Docker Syllabus for DevOps
+
+### Phase 1 — Docker Fundamentals
+1. What is Docker?
+2. Containers vs Virtual Machines
+3. Docker architecture
+   - Docker Client
+   - Docker Engine
+   - Docker Daemon
+   - Docker Registry
+4. Docker installation
+5. Docker Hub
+6. Docker images vs containers
+7. Docker lifecycle
+8. Docker CLI basics
+
+**Commands to master:**
+```bash
+docker version
+docker info
+docker pull
+docker images
+docker ps
+docker ps -a
+docker run
+docker start
+docker stop
+docker restart
+docker rm
+docker rmi
+docker logs
+docker inspect
+```
+
+### Phase 2 — Docker Images
+
+Learn:
+
+- What is a Docker image?
+- Image layers
+- Base images
+- Image tags
+- Image repositories
+- `docker pull`
+- `docker push`
+- `docker build`
+- `docker history`
+- `.dockerignore`
+
+### Phase 3 — Dockerfile ⭐ Very Important
+
+Learn every major Dockerfile instruction:
+
+```dockerfile
+FROM
+RUN
+CMD
+ENTRYPOINT
+COPY
+ADD
+WORKDIR
+ENV
+ARG
+EXPOSE
+USER
+VOLUME
+LABEL
+```
+
+Example:
+
+```dockerfile
+FROM nginx:latest
+
+WORKDIR /usr/share/nginx/html
+
+COPY index.html .
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
+```
+
+Understand especially:
+
+**CMD vs ENTRYPOINT**  
+**COPY vs ADD**  
+**ARG vs ENV**  
+**RUN vs CMD**
+
+These are common interview questions.
+
+---
+
+## Phase 4 — Container Networking
+
+Understand:
+
+- Container IP
+- Bridge network
+- Host network
+- None network
+- Port mapping
+- Container-to-container communication
+- DNS inside Docker networks
+
+Commands:
+
+```bash
+docker network ls
+docker network create
+docker network inspect
+docker network connect
+docker network disconnect
+```
+
+Practice:
+
+```text
+Container 1 → Container 2
+     ↓
+   Docker Network
+```
+
+---
+
+## Phase 5 — Docker Storage
+
+Learn:
+
+- Container writable layer
+- Volumes
+- Bind mounts
+- tmpfs
+- Persistent data
+
+Commands:
+
+```bash
+docker volume ls
+docker volume create
+docker volume inspect
+docker volume rm
+```
+
+Practice:
+
+```bash
+docker run -d \
+  -v mydata:/var/lib/mysql \
+  mysql
+```
+
+Understand **why data disappears when a container is deleted** and how volumes solve it.
+
+---
+
+# Phase 6 — Docker Compose ⭐
+
+This is very important for DevOps.
+
+Learn:
+
+- `docker compose`
+- YAML
+- Services
+- Networks
+- Volumes
+- Environment variables
+- Dependencies
+- Health checks
+
+Example architecture:
+
+```text
+              Docker Compose
+                    |
+        -------------------------
+        |           |           |
+      Nginx       App        MySQL
+        |           |           |
+        -------- Network --------
+```
+
+Practice deploying:
+
+```text
+Nginx
+   ↓
+Node/Java application
+   ↓
+MySQL
+```
+
+Commands:
+
+```bash
+docker compose up -d
+docker compose down
+docker compose ps
+docker compose logs
+docker compose build
+docker compose restart
+```
+
+---
+
+# Phase 7 — Docker Registry
+
+Learn:
+
+- Docker Hub
+- Private registry
+- Image tagging
+- Login
+- Push/pull
+- Repository management
+
+Practice:
+
+```bash
+docker login
+
+docker tag myapp:latest username/myapp:latest
+
+docker push username/myapp:latest
+
+docker pull username/myapp:latest
+```
+
+Understand the complete flow:
+
+```text
+Developer
+    ↓
+Dockerfile
+    ↓
+docker build
+    ↓
+Docker Image
+    ↓
+Docker Registry
+    ↓
+docker pull
+    ↓
+Production Server
+```
+
+---
+
+# Phase 8 — Docker Security ⭐
+
+Learn:
+
+- Running containers as non-root
+- Image vulnerabilities
+- Secrets
+- Minimal base images
+- Image scanning
+- Read-only filesystem
+- Resource limits
+- Docker socket security
+
+Understand why this is dangerous:
+
+```bash
+docker run --privileged
+```
+
+Also learn:
+
+```text
+Distroless images
+Alpine images
+Non-root containers
+Image scanning
+Secrets management
+```
+
+---
+
+# Phase 9 — Docker Resource Management
+
+Learn:
+
+- CPU limits
+- Memory limits
+- Restart policies
+- Container health checks
+
+Example:
+
+```bash
+docker run -d \
+  --memory=512m \
+  --cpus=1 \
+  nginx
+```
+
+Understand:
+
+```bash
+docker stats
+```
+
+for troubleshooting resource usage.
+
+---
+
+# Phase 10 — Docker Logging & Troubleshooting ⭐⭐⭐
+
+This is extremely important for your **SRE/DevOps background**.
+
+Learn:
+
+```bash
+docker logs
+docker inspect
+docker stats
+docker events
+docker top
+docker exec
+```
+
+Troubleshooting scenarios:
+
+### Scenario 1
+Container is running but application is inaccessible.
+
+Check:
+
+```bash
+docker ps
+docker logs <container>
+docker inspect <container>
+```
+
+Then check:
+
+```text
+Port mapping
+Application port
+Firewall
+Application logs
+Network
+```
+
+### Scenario 2
+Container continuously restarting.
+
+Check:
+
+```bash
+docker ps -a
+docker logs <container>
+docker inspect <container>
+```
+
+### Scenario 3
+Container exits immediately.
+
+Understand:
+
+```bash
+docker ps -a
+docker logs <container>
+```
+
+and the difference between:
+
+```text
+Running container
+Exited container
+Restarting container
+```
+
+---
+
+# Phase 11 — Docker + Jenkins CI/CD ⭐⭐⭐
+
+This should be one of your major practical projects.
+
+Learn this pipeline:
+
+```text
+Developer
+   ↓
+GitHub
+   ↓
+Jenkins
+   ↓
+Maven Build
+   ↓
+Unit Tests
+   ↓
+SonarQube
+   ↓
+Docker Build
+   ↓
+Docker Image
+   ↓
+Docker Hub/Nexus
+   ↓
+Deployment
+```
+
+For example:
+
+```bash
+docker build -t myapp:$BUILD_NUMBER .
+docker push myrepo/myapp:$BUILD_NUMBER
+```
+
+Then deploy:
+
+```bash
+docker pull myrepo/myapp:$BUILD_NUMBER
+docker stop myapp
+docker rm myapp
+docker run -d --name myapp -p 8080:8080 myrepo/myapp:$BUILD_NUMBER
+```
+
+---
+
+# Phase 12 — Docker + Kubernetes ⭐⭐⭐
+
+Since you're already learning Kubernetes, don't treat Docker and Kubernetes as completely separate subjects.
+
+Understand:
+
+```text
+Docker
+  ↓
+Container
+  ↓
+Docker Image
+  ↓
+Kubernetes
+  ↓
+Pod
+  ↓
+Deployment
+  ↓
+Service
+```
+
+Learn how Kubernetes uses container images and container runtimes.
+
+You should be comfortable with:
+
+```bash
+docker build
+docker tag
+docker push
+```
+
+before going deeply into Kubernetes deployments.
+
+---
+
+# 📅 30-Day Docker Study Plan
+
+## Week 1 — Fundamentals
+
+| Day | Topic | Practice |
+|---|---|---|
+| 1 | Docker introduction | Install Docker |
+| 2 | Architecture | Docker CLI commands |
+| 3 | Images | Pull/run images |
+| 4 | Containers | Start/stop/remove |
+| 5 | Container lifecycle | Logs/inspect |
+| 6 | Docker commands | 25+ commands |
+| 7 | Revision | Mini project |
+
+### Mini Project
+
+Run:
+
+```text
+Nginx
+MySQL
+Redis
+```
+
+and practice starting, stopping, inspecting and removing containers.
+
+---
+
+# Week 2 — Dockerfile + Networking + Storage
+
+| Day | Topic |
+|---|---|
+| 8 | Dockerfile basics |
+| 9 | Dockerfile advanced instructions |
+| 10 | Build custom images |
+| 11 | Image optimization |
+| 12 | Docker networking |
+| 13 | Volumes |
+| 14 | Troubleshooting + revision |
+
+### Project
+
+Create a Dockerfile for a simple application:
+
+```text
+GitHub
+  ↓
+Dockerfile
+  ↓
+Docker Build
+  ↓
+Docker Image
+  ↓
+Docker Container
+```
+
+---
+
+# Week 3 — Compose + Registry + Security
+
+| Day | Topic |
+|---|---|
+| 15 | Docker Compose |
+| 16 | Multi-container applications |
+| 17 | Compose networking |
+| 18 | Docker Hub |
+| 19 | Push/Pull images |
+| 20 | Docker security |
+| 21 | Resource management |
+
+### Project
+
+Build:
+
+```text
+             Nginx
+               ↓
+          Java/Node App
+               ↓
+             MySQL
+```
+
+using Docker Compose.
+
+---
+
+# Week 4 — DevOps Integration
+
+This is where you become **job-ready**, rather than just knowing Docker.
+
+| Day | Topic |
+|---|---|
+| 22 | Docker + Git |
+| 23 | Docker + Jenkins |
+| 24 | CI/CD pipeline |
+| 25 | Docker + SonarQube |
+| 26 | Docker + Nexus/Registry |
+| 27 | Production troubleshooting |
+| 28 | Docker interview questions |
+| 29 | End-to-end project |
+| 30 | Revision + mock interview |
+
+---
+
+# 🚀 Your Main DevOps Project
+
+I strongly recommend building **one complete project** instead of doing 10 small tutorials.
+
+### Project Architecture
+
+```text
+             GitHub
+                |
+                ↓
+             Jenkins
+                |
+          ┌─────┴─────┐
+          ↓           ↓
+       Maven       SonarQube
+          |
+          ↓
+      Docker Build
+          |
+          ↓
+    Docker Image
+          |
+          ↓
+   Docker Registry
+          |
+          ↓
+       Deployment
+          |
+     ┌────┴────┐
+     ↓         ↓
+   Nginx      App
+                |
+                ↓
+              MySQL
+
+Monitoring:
+Prometheus → Grafana
+```
+
+This project combines many of the technologies you're targeting:
+
+**Linux + Git + Jenkins + Maven + SonarQube + Docker + Registry + Kubernetes + AWS + Prometheus + Grafana**
+
+---
+
+# 🎯 Docker Topics You MUST Know for Interviews
+
+Prioritize these:
+
+### ⭐⭐⭐⭐⭐
+- Docker architecture
+- Image vs container
+- Dockerfile
+- CMD vs ENTRYPOINT
+- COPY vs ADD
+- Docker networking
+- Docker volumes
+- Docker Compose
+- Docker image layers
+- Docker troubleshooting
+- Docker + Jenkins CI/CD
+- Docker vs Kubernetes
+
+### ⭐⭐⭐⭐
+- Multi-stage Docker builds
+- Docker security
+- Resource limits
+- Health checks
+- Container restart policies
+- Private registries
+- Image optimization
+
+### ⭐⭐⭐
+- Docker events
+- tmpfs
+- privileged containers
+- Docker storage drivers
+- Advanced networking
+
+---
+
+## 🧠 Daily Study Pattern
+
+Since you're preparing for a **DevOps/SRE job**, don't spend the whole day watching courses.
+
+Use this approach:
+
+**1 hour — Learn**
+
+**1 hour — Hands-on**
+
+**30 minutes — Troubleshooting**
+
+**30 minutes — Interview preparation**
+
+So approximately:
+
+```text
+           4 Hours/day
+
+      ┌─────────────────┐
+      │ Theory — 1 hour  │
+      ├─────────────────┤
+      │ Practice — 1 hr  │
+      ├─────────────────┤
+      │ Troubleshooting  │
+      │      — 30 min    │
+      ├─────────────────┤
+      │ Interview — 30m  │
+      └─────────────────┘
+```
+
+### Most important advice
+
+Don't try to memorize 100 Docker commands.
+
+You should be able to **build an image, run an application, connect containers, persist data, troubleshoot failures, push the image to a registry, and automate the entire process through Jenkins.**
+
+That is much closer to what you'll actually be expected to do in a DevOps/SRE role.
